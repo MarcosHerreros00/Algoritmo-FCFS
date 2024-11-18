@@ -1,0 +1,74 @@
+import java.util.Scanner;
+public class Reto {
+
+    public static void main(String[] args)
+    {
+        Scanner sc = new Scanner(System.in);
+        
+        Proceso[] procesos = new Proceso[3];
+        for (int i = 0; i < 3; i++)
+        {
+            System.out.print("Indique el nombre del proceso " + (i + 1) + ": ");
+            String nombre = sc.next();
+            System.out.print("Indique el tiempo de llegada de " + nombre + ": ");
+            int tiempoLlegada = sc.nextInt();
+            System.out.print("Indique el tiempo de CPU de " + nombre + ": ");
+            int tiempoCPU = sc.nextInt();
+
+            procesos[i] = new Proceso(nombre, tiempoLlegada, tiempoCPU);
+        }
+
+        
+        for (int i = 0; i < procesos.length - 1; i++)
+        {
+            for (int j = i + 1; j < procesos.length; j++)
+            {
+                if (procesos[i].tiempoLLegada > procesos[j].tiempoLLegada)
+                {
+                    Proceso temp = procesos[i];
+                    procesos[i] = procesos[j];
+                    procesos[j] = temp;
+                }
+            }
+        }
+
+        int tiempoActual = 0;
+        int tiempoTotalEsperado = 0;
+        int tiempoTotalRetorno = 0;
+        int tiempoTotalRespuesta = 0;
+
+        for (Proceso Proceso : procesos)
+        {
+            if (tiempoActual < Proceso.tiempoLLegada)
+            {
+                tiempoActual = Proceso.tiempoLLegada;
+            }
+
+            Proceso.tiempoEspera = tiempoActual - Proceso.tiempoLLegada;
+            Proceso.tiempoRespuesta = Proceso.tiempoCPU; 
+            Proceso.tiempoRetorno = Proceso.tiempoEspera + Proceso.tiempoCPU;
+            
+            tiempoActual += Proceso.tiempoCPU;
+
+            tiempoTotalEsperado += Proceso.tiempoEspera;
+            tiempoTotalRetorno += Proceso.tiempoRetorno;
+            tiempoTotalRespuesta += Proceso.tiempoRespuesta;
+        }
+
+        System.out.println("\nResultados:");
+        System.out.println("Proceso\tLlegada\tCPU\tEspera\tRespuesta\tRetorno");
+        
+        for (Proceso Proceso : procesos)
+        {
+            System.out.println(Proceso.nombre + "\t" + Proceso.tiempoLLegada + "\t" + Proceso.tiempoCPU + "\t" + 
+            Proceso.tiempoEspera + "\t" + Proceso.tiempoRespuesta + "\t\t" + Proceso.tiempoRetorno);
+        }
+        
+        System.out.println("\nPromedios:");
+        System.out.printf("Tiempo medio de espera: %.2f\n", (double) tiempoTotalEsperado / procesos.length);
+        System.out.printf("Tiempo medio de respuesta: %.2f\n", (double) tiempoTotalRespuesta / procesos.length);
+        System.out.printf("Tiempo medio de retorno: %.2f\n", (double) tiempoTotalRetorno / procesos.length);
+
+        sc.close();
+    }
+}
