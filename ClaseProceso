@@ -1,0 +1,17 @@
+
+public class Proceso {
+    String nombre;
+    int tiempoLLegada;
+    int tiempoCPU;
+    int tiempoEspera;
+    int tiempoRetorno;
+    int tiempoRespuesta;
+
+    public Proceso(String nombre, int tiempoLLegada, int tiempoCPU)
+    {
+        this.nombre = nombre;
+        this.tiempoLLegada = tiempoLLegada;
+        this.tiempoCPU = tiempoCPU;
+    }
+}
+  
